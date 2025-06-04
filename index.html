@@ -41,7 +41,8 @@
       transition: transform 0.6s;
       transform-style: preserve-3d;
     }
-    .flip-container:hover .flip-inner {
+    .flip-container:hover .flip-inner,
+    .flip-inner.rotate {
       transform: rotateY(180deg);
     }
     .flip-front,
@@ -70,7 +71,7 @@
   <div class="max-w-4xl mx-auto px-4 py-10">
     <header class="text-center mb-12">
       <div class="flip-container mx-auto w-40 h-40 mb-4 relative rounded-full overflow-hidden">
-        <div class="flip-inner w-full h-full relative">
+        <div id="flipCard" class="flip-inner w-full h-full relative">
           <img src="main-photo.jpg" alt="Sindhu Wong" class="flip-front object-cover w-full h-full rounded-full">
           <img src="flip-photo.jpg" alt="Doctor Sindhu Wong" class="flip-back object-cover w-full h-full rounded-full">
         </div>
@@ -178,5 +179,12 @@
       <p>&copy; 2025 Sindhu Wong. All rights reserved.</p>
     </footer>
   </div>
+
+  <script>
+    const card = document.getElementById('flipCard');
+    card.addEventListener('click', function () {
+      card.querySelector('.flip-inner').classList.toggle('rotate');
+    });
+  </script>
 </body>
 </html>
