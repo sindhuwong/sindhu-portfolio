@@ -37,21 +37,35 @@
     .flip-container {
       perspective: 1000px;
     }
+  
     .flip-inner {
       transition: transform 0.6s;
       transform-style: preserve-3d;
+      position: relative;
     }
-    .flip-container:hover .flip-inner,
+  
+    /* Desktop hover effect */
+    @media (hover: hover) and (pointer: fine) {
+      .flip-container:hover .flip-inner {
+        transform: rotateY(180deg);
+      }
+    }
+  
+    /* Mobile click effect (added via JS) */
     .flip-inner.rotate {
       transform: rotateY(180deg);
     }
+  
     .flip-front,
     .flip-back {
       backface-visibility: hidden;
       position: absolute;
       width: 100%;
       height: 100%;
+      top: 0;
+      left: 0;
     }
+  
     .flip-back {
       transform: rotateY(180deg);
     }
@@ -181,9 +195,16 @@
   </div>
 
   <script>
-    const card = document.getElementById('flipCard');
-    card.addEventListener('click', function () {
-      card.querySelector('.flip-inner').classList.toggle('rotate');
+    document.addEventListener('DOMContentLoaded', function () {
+      const flipCard = document.getElementById('flipCard');
+      const flipInner = flipCard.querySelector('.flip-inner');
+  
+      // Only add click toggle if it's a touch device (mobile/tablet)
+      if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+        flipCard.addEventListener('click', function () {
+          flipInner.classList.toggle('rotate');
+        });
+      }
     });
   </script>
 </body>
