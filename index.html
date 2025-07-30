@@ -202,12 +202,12 @@
       // Trigger the flip 100ms after page load
       setTimeout(() => {
         flipInner.classList.add('rotate');
-      }, 500);
+      }, 2500);
 
       // Flip back 2 seconds later (i.e., at 2100ms)
       setTimeout(() => {
         flipInner.classList.remove('rotate');
-      }, 2500);
+      }, 4500);
 
       // Optional: Retain touch toggle on mobile
       if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
