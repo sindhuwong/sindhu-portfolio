@@ -198,8 +198,18 @@
     document.addEventListener('DOMContentLoaded', function () {
       const flipCard = document.getElementById('flipCard');
       const flipInner = flipCard.querySelector('.flip-inner');
-  
-      // Only add click toggle if it's a touch device (mobile/tablet)
+
+      // Trigger the flip 100ms after page load
+      setTimeout(() => {
+        flipInner.classList.add('rotate');
+      }, 100);
+
+      // Flip back 2 seconds later (i.e., at 2100ms)
+      setTimeout(() => {
+        flipInner.classList.remove('rotate');
+      }, 2100);
+
+      // Optional: Retain touch toggle on mobile
       if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
         flipCard.addEventListener('click', function () {
           flipInner.classList.toggle('rotate');
@@ -207,5 +217,6 @@
       }
     });
   </script>
+
 </body>
 </html>
