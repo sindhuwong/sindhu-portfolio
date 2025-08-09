@@ -30,10 +30,6 @@
     .stitch-tie  { stroke:#000000; stroke-width:2.2; stroke-linecap:round; }
     .stitch-knot { fill:#000000; }
     .cut-path    { fill:none; stroke:#ef4444; stroke-width:2.4; stroke-linecap:round; opacity:0.9; }
-
-    .ui-panel { position:fixed; bottom:20px; left:20px; background:white; padding:10px 12px; border:1px solid #e5e7eb; border-radius:8px; z-index:50; box-shadow:0 6px 18px rgba(0,0,0,.07); font-size:14px; }
-    .ui-panel label { display:flex; align-items:center; gap:.5rem; }
-    .ui-panel input[type="range"] { width:160px; }
   </style>
 
   <!-- Google tag (gtag.js) -->
@@ -211,15 +207,6 @@
   <!-- Page-anchored stitches overlay (scrolls with the page) -->
   <svg id="stitch-overlay" style="position:absolute; left:0; top:0; pointer-events:none; z-index:39;"></svg>
 
-  <!-- UI: Scissor Offset Slider -->
-  <div class="ui-panel">
-    <label>
-      Scissor Offset
-      <input id="offsetSlider" type="range" min="0" max="60" value="8" step="1">
-      <span id="offsetValue">8px</span>
-    </label>
-  </div>
-
   <script>
     // Flip card behavior
     document.addEventListener('DOMContentLoaded', function () {
@@ -265,7 +252,7 @@
       const baseC = { x: 900, y: 240 };         // right base backed up and higher
 
       // Tool geometry (from wrist): fore tool bar = 36, blade to physical tip = 16
-      const TOOL_TO_TIP = 36 + 16; // 52 px along wrist orientation to blade tip
+      const TOOL_TO_TIP = 36 + 16; // 52 px from wrist joint to scissor tip along tool axis
 
       // Blade angles
       const OPEN_DEG = 16, CLOSE_DEG = 0; 
@@ -344,30 +331,26 @@
         setTimeout(()=>{ g.remove(); }, 5200);
       }
 
-      // UI: live offset control
+      // Fixed offset for stitch placement (no UI)
       let scissorOffset = 8;
-      const slider = document.getElementById('offsetSlider');
-      const offsetValue = document.getElementById('offsetValue');
-      if (slider && offsetValue){
-        slider.addEventListener('input', e => {
-          scissorOffset = parseInt(e.target.value, 10) || 0;
-          offsetValue.textContent = scissorOffset + 'px';
-        });
-      }
 
       function snip(ev){
+        // Allow clicks on interactive elements (e.g., Contact Me) to work normally
+        if (ev.target.closest('a,button,input,textarea,select,label')) return;
+
         // animate blades
         bladeTarget = CLOSE_DEG; setTimeout(()=>{ bladeTarget = OPEN_DEG; },120); setTimeout(()=>{ bladeTarget = CLOSE_DEG; },240); setTimeout(()=>{ bladeTarget = OPEN_DEG; },360);
         // pulse camera beam
         beamOpacityTarget = 0.22; lensPulse = 1.0;
-        // place stitch at the ACTUAL SCISSOR TIP (base->L1, then L2, then along wrist+blades)
+
+        // Compute actual scissor tip + optional forward offset
         const toolDir = aS + aE + aW; // wrist/blade orientation
         const tipX_vb = base.x + Math.cos(aS) * L1 + Math.cos(aS + aE) * L2 + Math.cos(toolDir) * (TOOL_TO_TIP + scissorOffset);
         const tipY_vb = base.y + Math.sin(aS) * L1 + Math.sin(aS + aE) * L2 + Math.sin(toolDir) * (TOOL_TO_TIP + scissorOffset);
         const page = svgToPage(tipX_vb, tipY_vb);
         addStitchAt(page.x, page.y, toolDir);
       }
-      window.addEventListener('click', (e)=>snip(e), { passive:true });
+      window.addEventListener('click', snip, { passive:true });
 
       // Beam/lens pulse state
       let beamOpacity = 0.10, beamOpacityTarget = 0.10, lensPulse = 0;
