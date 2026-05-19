@@ -1,14 +1,384 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="refresh" content="0; url=/profile/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
   <title>Sindhu Wong</title>
-  <link rel="canonical" href="https://sindhuwong.com/profile/">
-  <script>location.replace('/profile/');</script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="icon" href="logos/favicon.png" type="image/png">
+  <style>
+    .timeline::before { content: ''; position: absolute; left: 1rem; top: 0; bottom: 0; width: 2px; background: #cbd5e1; }
+    .timeline-item { position: relative; padding-left: 3rem; margin-bottom: 2rem; }
+    .timeline-item::before { content: ''; position: absolute; left: 0.75rem; width: 10px; height: 10px; background: #3b82f6; border-radius: 9999px; top: 0.25rem; }
+
+    /* coin flip */
+    .flip-container { perspective: 1000px; }
+    .flip-inner { transition: transform 0.6s; transform-style: preserve-3d; position: relative; }
+    @media (hover: hover) and (pointer: fine) { .flip-container:hover .flip-inner { transform: rotateY(180deg); } }
+    .flip-inner.rotate { transform: rotateY(180deg); }
+    .flip-front, .flip-back { backface-visibility: hidden; position: absolute; width: 100%; height: 100%; top: 0; left: 0; }
+    .flip-back { transform: rotateY(180deg); }
+
+    /* ===== Mouse-follow robotic arm overlay ===== */
+    #robot-arm-overlay { position: fixed; inset: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 40; }
+    @media (prefers-reduced-motion: reduce) { #robot-arm-overlay { display: none; } }
+
+    /* stitches */
+    #stitchesLayer { pointer-events:none; }
+    .stitch-path { fill:none; stroke:#000000; stroke-width:2.2; stroke-linecap:round; }
+    .stitch-tie  { stroke:#000000; stroke-width:2.2; stroke-linecap:round; }
+    .stitch-knot { fill:#000000; }
+    .cut-path    { fill:none; stroke:#ef4444; stroke-width:2.4; stroke-linecap:round; opacity:0.9; }
+  </style>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-95F2R96QWF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-95F2R96QWF');
+  </script>
 </head>
-<body>
-  <p><a href="/profile/">Go to profile</a></p>
+<body class="bg-white text-gray-800">
+  <div class="max-w-4xl mx-auto px-4 py-10">
+    <header class="text-center mb-12">
+      <div id="flipCard" class="flip-container mx-auto w-40 h-40 mb-4 relative rounded-full overflow-hidden">
+        <div class="flip-inner w-full h-full relative">
+          <img src="main-photo.jpg" alt="Sindhu Wong" class="flip-front object-cover w-full h-full rounded-full">
+          <img src="flip-photo.jpg" alt="Doctor Sindhu Wong" class="flip-back object-cover w-full h-full rounded-full">
+        </div>
+      </div>
+      <h1 class="text-4xl font-bold">Sindhu Wong</h1>
+      <p class="text-lg text-gray-600 italic">Engineer turned future physician. I am committed to healing through innovation.</p>
+      <a href="mailto:sindhu@sindhuwong.com" class="inline-block mt-4 bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600">Contact Me</a>
+    </header>
+
+    <section class="mb-12">
+      <h2 class="text-2xl font-semibold mb-2">Why Medicine?</h2>
+      <p>
+        After over a decade building cutting-edge technologies at NVIDIA and Intuitive Surgical,
+        I realized my true calling lies on the clinical side, serving patients face-to-face. My career
+        has been dedicated to empowering healthcare through innovation, but now I seek to deliver
+        that impact directly, as a physician.
+      </p>
+    </section>
+
+    <section class="mb-12">
+      <h2 class="text-2xl font-semibold mb-4">Timeline</h2>
+      <div class="timeline relative ml-6">
+        <div class="timeline-item flex items-start gap-4">
+          <img src="logos/cisco-full.svg" alt="Cisco Logo" class="w-9">
+          <div>
+            <h3 class="font-bold">2009 – Cisco Systems</h3>
+            <p>Software Engineer working on multimedia networking protocols.</p>
+          </div>
+        </div>
+        <div class="timeline-item flex items-start gap-4">
+          <img src="logos/nvidia.svg" alt="NVIDIA Logo" class="w-9 ">
+          <div>
+            <h3 class="font-bold">2014 – NVIDIA</h3>
+            <p>Senior Software Engineer driving power and performance optimization for next-generation GPUs, enabling cutting-edge AI and compute workloads.</p>
+          </div>
+        </div>
+        <div class="timeline-item flex items-start gap-4">
+          <img src="logos/intuitive.png" alt="Intuitive Surgical Logo" class="w-9">
+          <div>
+            <h3 class="font-bold">2023 – Intuitive Surgical</h3>
+            <p>Senior Software Engineer leading video pipeline optimization for the ION surgical robot.</p>
+          </div>
+        </div>
+        <div class="timeline-item flex items-start gap-4">
+          <img src="logos/foundation.png" alt="Foundation Logo" class="w-9">
+          <div>
+            <h3 class="font-bold">2024 – Intuitive Foundation</h3>
+            <p>Global Ambassador promoting STEM outreach and moderating global health symposiums.</p>
+          </div>
+        </div>
+        <div class="timeline-item flex items-start gap-4">
+          <img src="logos/doctor.png" alt="Medical Logo" class="w-9">
+          <div>
+            <h3 class="font-bold">Now – Future Physician</h3>
+            <p>Applying to medical school to bring innovation directly to patient care.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="mb-12">
+      <h2 class="text-2xl font-semibold mb-4">Clinical & Volunteer Experience</h2>
+      <div class="flex flex-col md:flex-row items-start gap-6">
+        <img src="volunteer-photo.jpg" alt="Volunteer Experience" class="rounded-lg w-full md:w-1/4 h-auto">
+        <ul class="list-disc pl-6 space-y-2">
+          <li>El Camino Hospital Volunteer (2017–2019): Patient support, training volunteers, and logistical assistance.</li>
+          <li>Shadowed physicians at Santa Clara Medical Center, Bay Area Wellness, PAMF, and ER cardiology units.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="mb-12">
+      <h2 class="text-2xl font-semibold mb-4">Education</h2>
+      <ul class="list-disc ml-6 space-y-4">
+        <li class="flex items-center gap-2">
+          <img src="logos/cal.svg" alt="Education Logo" class="w-9">
+          <span><strong>UC Berkeley Extension</strong> — Pre-med post-bacc, GPA: 3.98 (scale of 4.0), MCAT: 519 (96th percentile)</span>
+        </li>
+        <li class="flex items-center gap-2">
+          <img src="logos/UF.png" alt="Education Logo" class="w-9">
+          <span><strong>University of Florida</strong> — M.S. in Computer Engineering, GPA: 3.78 (scale of 4.0)</span>
+        </li>
+        <li class="flex items-center gap-2">
+          <img src="logos/VTU.png" alt="Education Logo" class="w-9">
+          <span><strong>VTU, India</strong> — B.E. in Computer Science, graduated with Distinction</span>
+        </li>
+      </ul>
+    </section>
+
+    <section class="mb-12">
+      <h2 class="text-2xl font-semibold mb-4">Awards & Publications</h2>
+      <ul class="list-disc ml-6 space-y-4">
+        <li class="flex items-center gap-2">
+          <img src="logos/cisco-full.svg" alt="Award Icon" class="w-9">
+          <span>CISCO Achievement & Star Awards for innovation and issue resolution</span>
+        </li>
+        <li class="flex items-center gap-2">
+          <img src="logos/ucsf.svg" alt="Publication Icon" class="w-9">
+          <span><strong>UCSF Adaptogens Review</strong> — Published scoping review on Ayurvedic cancer therapies under Dr. Dhruva Anand <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10847161/" class="underline text-blue-500">[PMID]</a></span>
+        </li>
+      </ul>
+    </section>
+
+    <footer class="text-center text-gray-500 mt-16">
+      <p>&copy; 2025 Sindhu Wong. All rights reserved.</p>
+    </footer>
+  </div>
+
+  <!-- ===== Mouse-follow Robotic Arms Overlay (non-blocking) ===== -->
+  <svg id="robot-arm-overlay" viewBox="0 0 1000 600" aria-hidden="true">
+    <!-- LEFT: instrument arm with scissor tip -->
+    <g id="armRoot" transform="translate(140,300)">
+      <ellipse cx="0" cy="0" rx="22" ry="10" fill="#262b33" stroke="#3a404b" stroke-width="1"/>
+      <g id="shoulder" transform="rotate(0 0 0)">
+        <circle cx="0" cy="0" r="7" fill="#d7dde6" stroke="#9aa4b2" stroke-width="0.8"/>
+        <rect x="0" y="-4.5" width="220" height="9" rx="3" ry="3" fill="#bfc5cf" stroke="#8f98a6" stroke-width="0.7"/>
+        <g id="elbow" transform="translate(220,0) rotate(0)">
+          <circle cx="0" cy="0" r="6" fill="#d7dde6" stroke="#9aa4b2" stroke-width="0.8"/>
+          <rect x="0" y="-6.5" width="180" height="3" rx="1.5" ry="1.5" fill="#bfc5cf" stroke="#8f98a6" stroke-width="0.6"/>
+          <rect x="0" y="3.5" width="180" height="3" rx="1.5" ry="1.5" fill="#bfc5cf" stroke="#8f98a6" stroke-width="0.6"/>
+          <g id="wrist" transform="translate(180,0) rotate(0)">
+            <circle cx="0" cy="0" r="5" fill="#d7dde6" stroke="#9aa4b2" stroke-width="0.7"/>
+            <rect x="0" y="-1.5" width="36" height="3" rx="1.5" ry="1.5" fill="#aab3bf" stroke="#8f98a6" stroke-width="0.6"/>
+            <!-- Scissor blades at tip -->
+            <g id="scissor" transform="translate(36,0)">
+              <rect id="bladeTop" x="0" y="-1" width="16" height="2" fill="#e5e7eb" stroke="#9aa4b2" stroke-width="0.5" transform="rotate(16,0,0)"/>
+              <rect id="bladeBot" x="0" y="-1" width="16" height="2" fill="#e5e7eb" stroke="#9aa4b2" stroke-width="0.5" transform="rotate(-16,0,0)"/>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+
+    <!-- RIGHT: camera/light arm (backed up; aims at scissor tip) -->
+    <g id="camArmRoot" transform="translate(900,240)">
+      <ellipse cx="0" cy="0" rx="22" ry="10" fill="#262b33" stroke="#3a404b" stroke-width="1"/>
+      <g id="camShoulder" transform="rotate(0 0 0)">
+        <circle cx="0" cy="0" r="7" fill="#d7dde6" stroke="#9aa4b2" stroke-width="0.8"/>
+        <rect x="0" y="-4.5" width="200" height="9" rx="3" ry="3" fill="#c7ced8" stroke="#8f98a6" stroke-width="0.7"/>
+        <g id="camElbow" transform="translate(200,0) rotate(0)">
+          <circle cx="0" cy="0" r="6" fill="#d7dde6" stroke="#9aa4b2" stroke-width="0.8"/>
+          <rect x="0" y="-6" width="160" height="3" rx="1.5" ry="1.5" fill="#c7ced8" stroke="#8f98a6" stroke-width="0.6"/>
+          <rect x="0" y="3" width="160" height="3" rx="1.5" ry="1.5" fill="#c7ced8" stroke="#8f98a6" stroke-width="0.6"/>
+          <g id="camWrist" transform="translate(160,0) rotate(0)">
+            <circle cx="0" cy="0" r="5" fill="#d7dde6" stroke="#9aa4b2" stroke-width="0.7"/>
+            <!-- camera head -->
+            <g id="cameraHead" transform="translate(0,0)">
+              <circle cx="10" cy="0" r="7" fill="#222" stroke="#9aa4b2" stroke-width="0.7"/>
+              <circle id="cameraLens" cx="10" cy="0" r="3.5" fill="#7dd3fc"/>
+            </g>
+            <!-- light beam (rotates with camWrist) -->
+            <polygon id="beam" points="10,0 260,-60 260,60" fill="#fef08a" opacity="0.10" />
+          </g>
+        </g>
+      </g>
+    </g>
+
+    <circle id="armTarget" cx="500" cy="300" r="8" fill="#79ffe1" opacity="0.18"/>
+  </svg>
+
+  <!-- Page-anchored stitches overlay (scrolls with the page) -->
+  <svg id="stitch-overlay" style="position:absolute; left:0; top:0; pointer-events:none; z-index:39;"></svg>
+
+  <script>
+    // Flip card behavior
+    document.addEventListener('DOMContentLoaded', function () {
+      const flipCard = document.getElementById('flipCard');
+      if (!flipCard) return;
+      const flipInner = flipCard.querySelector('.flip-inner');
+      setTimeout(() => { flipInner.classList.add('rotate'); }, 2500);
+      setTimeout(() => { flipInner.classList.remove('rotate'); }, 4500);
+      if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+        flipCard.addEventListener('click', function () { flipInner.classList.toggle('rotate'); });
+      }
+    });
+  </script>
+
+  <script>
+    (function(){
+      const svg = document.getElementById('robot-arm-overlay');
+      if (!svg) return;
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+      if (reduce.matches) { svg.remove(); return; }
+      reduce.addEventListener?.('change', e => { svg.style.display = e.matches ? 'none' : 'block'; });
+
+      // LEFT instrument arm (scissor)
+      const shoulder = document.getElementById('shoulder');
+      const elbow = document.getElementById('elbow');
+      const wrist = document.getElementById('wrist');
+      const bladeTop = document.getElementById('bladeTop');
+      const bladeBot = document.getElementById('bladeBot');
+
+      // RIGHT camera arm
+      const camShoulder = document.getElementById('camShoulder');
+      const camElbow = document.getElementById('camElbow');
+      const camWrist = document.getElementById('camWrist');
+      const beam = document.getElementById('beam');
+      const cameraLens = document.getElementById('cameraLens');
+
+      const targetDot = document.getElementById('armTarget');
+
+      // Link lengths
+      const L1 = 220, L2 = 180;                 // left arm
+      const L1C = 200, L2C = 160;               // right camera arm
+      const base = { x: 140, y: 300 };          // left base
+      const baseC = { x: 900, y: 240 };         // right base backed up and higher
+
+      // Tool geometry (from wrist): fore tool bar = 36, blade to physical tip = 16
+      const TOOL_TO_TIP = 36 + 16; // 52 px from wrist joint to scissor tip along tool axis
+
+      // Blade angles
+      const OPEN_DEG = 16, CLOSE_DEG = 0; 
+      let bladeDeg = OPEN_DEG, bladeTarget = OPEN_DEG;
+
+      // Target position in viewBox (mouse for left arm)
+      let tx = 500, ty = 300; // mouse mapped to overlay viewBox
+      // Camera tracks a desired point near the scissor tip
+      let txC = tx, tyC = ty; // smoothed camera target
+
+      function clientToSvg(x, y){
+        const pt = svg.createSVGPoint(); pt.x = x; pt.y = y;
+        const sp = pt.matrixTransform(svg.getScreenCTM().inverse());
+        return { x: sp.x, y: sp.y };
+      }
+      // Convert overlay SVG viewBox coords to page (CSS px) coords
+      function svgToPage(x, y){
+        const pt = svg.createSVGPoint(); pt.x = x; pt.y = y;
+        const sp = pt.matrixTransform(svg.getScreenCTM());
+        return { x: sp.x + window.scrollX, y: sp.y + window.scrollY };
+      }
+
+      function clamp(v, lo, hi){ return Math.max(lo, Math.min(hi, v)); }
+      function solveIK(basePt, L1v, L2v, target){
+        const dx = target.x - basePt.x, dy = target.y - basePt.y;
+        const d = Math.hypot(dx, dy);
+        const dC = clamp(d, Math.abs(L1v - L2v) + 0.001, L1v + L2v - 0.001);
+        const cosE = clamp((L1v*L1v + L2v*L2v - dC*dC) / (2*L1v*L2v), -1, 1);
+        const eAng = Math.PI - Math.acos(cosE);
+        const cosS = clamp((L1v*L1v + dC*dC - L2v*L2v) / (2*L1v*dC), -1, 1);
+        const toward = Math.atan2(dy, dx);
+        const sAng = toward - Math.acos(cosS);
+        const wAng = toward - (sAng + eAng);
+        return { sAng, eAng, wAng };
+      }
+
+      // Smooth motion
+      let aS = 0, aE = 0, aW = 0;             // left arm angles
+      let cS = Math.PI, cE = 0, cW = 0;        // right arm angles (init facing left)
+      const ease = 0.18;                       // left snappiness
+      const easeCam = 0.12;                    // right cam smoother
+      const easeTargetCam = 0.10;              // scissor-tip target lag
+      function lerp(a,b,t){ return a + (b-a)*t; }
+      function lerpAngle(a,b,t){ let d = ((b - a + Math.PI) % (2*Math.PI)) - Math.PI; return a + d * t; }
+
+      function onPointerMove(e){ const p = clientToSvg(e.clientX, e.clientY); tx = p.x; ty = p.y; }
+      window.addEventListener('pointermove', onPointerMove, { passive:true });
+
+      // === Page-anchored stitches ===
+      const stitchesSvg = document.getElementById('stitch-overlay');
+      const ns = 'http://www.w3.org/2000/svg';
+      const stitchesLayer = (() => { const g = document.createElementNS(ns,'g'); g.setAttribute('id','stitchesLayer'); stitchesSvg.appendChild(g); return g; })();
+      function sizeStitchesSvg(){
+        const w = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth);
+        const h = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
+        stitchesSvg.setAttribute('width', w); stitchesSvg.setAttribute('height', h);
+        stitchesSvg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+        stitchesSvg.style.width  = w + 'px'; stitchesSvg.style.height = h + 'px';
+      }
+      sizeStitchesSvg(); window.addEventListener('resize', sizeStitchesSvg, { passive:true }); window.addEventListener('load', sizeStitchesSvg, { passive:true });
+
+      function addStitchAt(x, y, angle){
+        const half = 18, arc = 6; // geometry
+        const dx = Math.cos(angle), dy = Math.sin(angle); const px = -dy, py = dx;
+        const x0 = x - half*dx, y0 = y - half*dy; const x1 = x + half*dx, y1 = y + half*dy; const cx = x + arc*px, cy = y + arc*py;
+
+        const g = document.createElementNS(ns,'g'); g.setAttribute('class','stitch'); g.style.opacity = '1';
+        const cut = document.createElementNS(ns,'path'); cut.setAttribute('class','cut-path'); cut.setAttribute('d', `M ${x0.toFixed(2)} ${y0.toFixed(2)} L ${x1.toFixed(2)} ${y1.toFixed(2)}`); g.appendChild(cut);
+        const path = document.createElementNS(ns,'path'); path.setAttribute('class','stitch-path'); path.setAttribute('d', `M ${x0.toFixed(2)} ${y0.toFixed(2)} Q ${cx.toFixed(2)} ${cy.toFixed(2)} ${x1.toFixed(2)} ${y1.toFixed(2)}`); g.appendChild(path);
+        [0.33, 0.66].forEach(t=>{ const bx=x0+(x1-x0)*t, by=y0+(y1-y0)*t; const tLen=6; const lx0=bx-px*tLen*0.5, ly0=by-py*tLen*0.5; const lx1=bx+px*tLen*0.5, ly1=by+py*tLen*0.5; const tie=document.createElementNS(ns,'line'); tie.setAttribute('class','stitch-tie'); tie.setAttribute('x1',lx0.toFixed(2)); tie.setAttribute('y1',ly0.toFixed(2)); tie.setAttribute('x2',lx1.toFixed(2)); tie.setAttribute('y2',ly1.toFixed(2)); g.appendChild(tie); });
+        const knot=document.createElementNS(ns,'circle'); knot.setAttribute('class','stitch-knot'); knot.setAttribute('cx',x.toFixed(2)); knot.setAttribute('cy',y.toFixed(2)); knot.setAttribute('r','1.8'); g.appendChild(knot);
+        stitchesLayer.appendChild(g);
+        try { const len = path.getTotalLength(); path.style.strokeDasharray = len; path.style.strokeDashoffset = len; path.getBoundingClientRect(); path.style.transition = 'stroke-dashoffset 300ms ease-out, opacity 300ms ease-out'; path.style.strokeDashoffset = '0'; } catch(e){}
+        // fade-out over 5s, then remove
+        requestAnimationFrame(()=>{ g.style.transition = 'opacity 5s linear'; g.style.opacity = '0'; });
+        setTimeout(()=>{ g.remove(); }, 5200);
+      }
+
+      // Fixed offset for stitch placement (no UI)
+      let scissorOffset = 8;
+
+      function snip(ev){
+        // Allow clicks on interactive elements (e.g., Contact Me) to work normally
+        if (ev.target.closest('a,button,input,textarea,select,label')) return;
+
+        // animate blades
+        bladeTarget = CLOSE_DEG; setTimeout(()=>{ bladeTarget = OPEN_DEG; },120); setTimeout(()=>{ bladeTarget = CLOSE_DEG; },240); setTimeout(()=>{ bladeTarget = OPEN_DEG; },360);
+        // pulse camera beam
+        beamOpacityTarget = 0.22; lensPulse = 1.0;
+
+        // Compute actual scissor tip + optional forward offset
+        const toolDir = aS + aE + aW; // wrist/blade orientation
+        const tipX_vb = base.x + Math.cos(aS) * L1 + Math.cos(aS + aE) * L2 + Math.cos(toolDir) * (TOOL_TO_TIP + scissorOffset);
+        const tipY_vb = base.y + Math.sin(aS) * L1 + Math.sin(aS + aE) * L2 + Math.sin(toolDir) * (TOOL_TO_TIP + scissorOffset);
+        const page = svgToPage(tipX_vb, tipY_vb);
+        addStitchAt(page.x, page.y, toolDir);
+      }
+      window.addEventListener('click', snip, { passive:true });
+
+      // Beam/lens pulse state
+      let beamOpacity = 0.10, beamOpacityTarget = 0.10, lensPulse = 0;
+      // Camera standoff and retraction control
+      const STANDOFF = 60, MAX_EXT = L1C + L2C - 20;
+
+      function tick(){
+        const L = solveIK(base, L1, L2, { x: tx, y: ty }); aS = lerp(aS, L.sAng, ease); aE = lerp(aE, L.eAng, ease); aW = lerp(aW, L.wAng, ease);
+        const tipX = base.x + Math.cos(aS) * L1 + Math.cos(aS + aE) * L2; const tipY = base.y + Math.sin(aS) * L1 + Math.sin(aS + aE) * L2;
+        const dx = tipX - baseC.x, dy = tipY - baseC.y; const dist = Math.hypot(dx, dy) || 0.0001; const dirX = dx/dist, dirY = dy/dist;
+        const desiredDist = Math.max(20, Math.min(MAX_EXT, dist - STANDOFF)); const desiredX = baseC.x + dirX*desiredDist; const desiredY = baseC.y + dirY*desiredDist;
+        txC = lerp(txC, desiredX, easeTargetCam); tyC = lerp(tyC, desiredY, easeTargetCam);
+        const R = solveIK(baseC, L1C, L2C, { x: txC, y: tyC }); cS = lerpAngle(cS, R.sAng, easeCam); cE = lerpAngle(cE, R.eAng, easeCam); cW = lerpAngle(cW, R.wAng, easeCam);
+
+        shoulder.setAttribute('transform', `rotate(${(aS*180/Math.PI).toFixed(2)} 0 0)`);
+        elbow.setAttribute('transform', `translate(${L1},0) rotate(${(aE*180/Math.PI).toFixed(2)} 0 0)`);
+        wrist.setAttribute('transform', `translate(${L2},0) rotate(${(aW*180/Math.PI).toFixed(2)} 0 0)`);
+        camShoulder.setAttribute('transform', `rotate(${(cS*180/Math.PI).toFixed(2)} 0 0)`);
+        camElbow.setAttribute('transform', `translate(${L1C},0) rotate(${(cE*180/Math.PI).toFixed(2)} 0 0)`);
+        camWrist.setAttribute('transform', `translate(${L2C},0) rotate(${(cW*180/Math.PI).toFixed(2)} 0 0)`);
+
+        bladeDeg = lerp(bladeDeg, bladeTarget, 0.35); bladeTop.setAttribute('transform', `rotate(${bladeDeg.toFixed(2)},0,0)`); bladeBot.setAttribute('transform', `rotate(${(-bladeDeg).toFixed(2)},0,0)`);
+        beamOpacity = lerp(beamOpacity, beamOpacityTarget, 0.12); beam.setAttribute('opacity', beamOpacity.toFixed(2)); lensPulse = lerp(lensPulse, 0, 0.08); cameraLens.setAttribute('r', (3.5 + lensPulse*1.5).toFixed(2)); if (Math.abs(beamOpacity - beamOpacityTarget) < 0.005) beamOpacityTarget = 0.10;
+        if (targetDot){ targetDot.setAttribute('cx', tx.toFixed(1)); targetDot.setAttribute('cy', ty.toFixed(1)); }
+        requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    })();
+  </script>
 </body>
 </html>
